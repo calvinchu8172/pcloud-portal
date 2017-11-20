@@ -185,6 +185,15 @@ Then(/^it should not do anything on Pairing page$/) do
   expect(page).to have_content I18n.t("warnings.settings.pairing.start.instruction_2")
 end
 
+When(/^the device is not NAS$/) do
+  @device.update(product_id: 39)
+end
+
+Then(/^the user should not see QR code on pairing page$/) do
+  expect(page).not_to have_xpath('//img[@src="/assets/zdrive_qrcode.png"]')
+  expect(page).not_to have_xpath('//img[@src="/assets/zcloud_qrcode.png"]')
+end
+
 def get_pairing_session(device)
   device.pairing_session.all
 end

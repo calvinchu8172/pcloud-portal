@@ -47,6 +47,10 @@ class Device < ActiveRecord::Base
     return instance
   end
 
+  def is_nas?
+    self.product.category.name == 'NAS'
+  end
+
   def paired?
     !self.pairing.owner.empty?
   end
@@ -166,14 +170,14 @@ class Device < ActiveRecord::Base
 
   # defined conditions that device is available to pair
   def is_available_to_pair? current_user_id
-    ( self.is_not_in_pairing_session? || 
-      self.pairing_session_is_not_in_working_section? || 
+    ( self.is_not_in_pairing_session? ||
+      self.pairing_session_is_not_in_working_section? ||
       self.is_pairing_by_current_user?(current_user_id)
     ) && self.presence?
   end
 
   def is_not_in_pairing_session?
-    self.pairing_session.size == 0 
+    self.pairing_session.size == 0
   end
 
   # pairing session not in handling
@@ -190,7 +194,7 @@ class Device < ActiveRecord::Base
   def ip_encode_hex
     IPAddr.new(current_ip_address).to_i.to_s(16).rjust(8, "0")
   end
-  
+
   def ip_decode_hex
     IPAddr.new(self.ip_address.to_i(16), Socket::AF_INET).to_s
   end

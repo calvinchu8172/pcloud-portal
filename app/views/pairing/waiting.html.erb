@@ -35,7 +35,9 @@
           <%= link_to(I18n.t("labels.retry"), "/pairing/index/#{@device.encoded_id}", class: "zyxel_btn_ok zyxel_enabled") %>
         </div>
         <div ng-switch-when="done" class="app_store">
-          <%= render 'app_store' %>
+          <% if @device.is_nas? %>
+            <%= render 'app_store' %>
+          <%end%>
         </div>
         <div ng-switch-when="done" class="zyxel_btn_area">
           <% session[:first_pairing] = true %>
