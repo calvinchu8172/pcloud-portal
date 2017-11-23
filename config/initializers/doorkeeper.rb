@@ -114,6 +114,22 @@ Doorkeeper.configure do
   # realm "Doorkeeper"
 end
 
+# 新增 Doorkeeper::Application 擴充功能
+module ApplicationExtension
+  extend ActiveSupport::Concern
+
+  included do
+
+    clear_validators!
+
+    validates :name, :secret, :uid, presence: true
+    validates :uid, uniqueness: true
+    validates :logout_redirect_uri, :redirect_uri, redirect_uri: true, allow_blank: true
+  end
+end
+
+Doorkeeper::Application.send(:include, ApplicationExtension)
+
 # Doorkeeper::AuthorizedApplicationsController.layout 'rwd'
 # Doorkeeper::AuthorizationsController.layout 'rwd'
 # Doorkeeper::ApplicationsController.send :include, CheckUserConfirmation
