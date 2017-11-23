@@ -36,4 +36,4 @@ cucumber:
   only:
     - develop
     - /^release.*$/
-    - feature/20171120-1-only-show-nas-info-in-nas-product
+    - feature/20171123-1-no-validate-sso-app-redirect-uri
