@@ -32,9 +32,9 @@ When(/^client send a POST request to \/v(\d+)\/oauth(\d+)\/applications with:$/)
   end
 
   if data["scopes"].nil?
-    scopes = nil
+    @scopes = ''
   elsif data["scopes"].include?("INVALID")
-    scopes = "invalid scopes"
+    @scopes = "invalid scopes"
   else
     @scopes = "all show create update"
   end
@@ -98,6 +98,6 @@ Then(/^the JSON response should have new app info$/) do
   body_hash = JSON.parse(last_response.body)['data']
   expect(body_hash['name']).to eq @name
   expect(body_hash['redirect_uri']).to eq @redirect_uri
-  expect(body_hash['scopes']).to eq @scopes.split(' ')
+  expect(body_hash['scopes'].join(' ')).to eq @scopes
   expect(body_hash['logout_redirect_uri']).to eq @logout_redirect_uri
 end
