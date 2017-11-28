@@ -31,7 +31,7 @@ When(/^client send a PUT request to \/v1\/user\/revoke with:$/) do |table|
   elsif data["timestamp"].include?("INVALID")
     timestamp = Date.new(2017,9,6).to_time.to_i
   else
-    timestamp = 10.minutes.from_now.to_i
+    timestamp = Time.now.to_i
   end
 
   if data["signature"].nil?

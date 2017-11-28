@@ -20,7 +20,7 @@ When(/^client send a DELETE request to \/v(\d+)\/oauth(\d+)\/applications\/:id w
   elsif data["timestamp"].include?("INVALID")
     timestamp = Date.new(2017,9,6).to_time.to_i
   else
-    timestamp = 10.minutes.from_now.to_i
+    timestamp = Time.now.to_i
   end
 
   if data["signature"].nil?
@@ -48,7 +48,7 @@ When(/^client send a DELETE request to \/v(\d+)\/oauth(\d+)\/applications\/:inva
   path = '//' + Settings.environments.api_domain + "/v1/oauth2/applications/invalid_id"
 
   certificate_serial = @certificate.serial
-  timestamp = 10.minutes.from_now.to_i
+  timestamp = Time.now.to_i
   signature = create_signature_urlsafe(timestamp, certificate_serial, 'invalid_id')
 
   header 'X-Signature', signature

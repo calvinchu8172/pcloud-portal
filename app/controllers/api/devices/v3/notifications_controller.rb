@@ -52,29 +52,17 @@ class Api::Devices::V3::NotificationsController < Api::Base
 
     localizations = {}
     template.template_contents.each do |tc|
-      localizations[tc.locale.to_sym] = {
-        title: tc.title
-      }
-      localizations[tc.locale.to_sym][:body] = tc.fit_params(req_template_params)
+      unless(tc.title.blank?) 
+        localizations[tc.locale.to_sym] = {
+          title: tc.title
+        }
+        localizations[tc.locale.to_sym][:body] = tc.fit_params(req_template_params)
+      end
     end
 
     request_id = request.headers.env["action_dispatch.request_id"]
+    app_group_id = valid_params[:app_group_id]
     begin
-      # sqs = AWS::SQS.new
-      # queue = sqs.queues.named(Settings.environments.sqs.push_jobs.name)
-      # queue.send_message(localizations.to_json, {
-      #   :message_attributes => { 
-      #     "cloud_id" => { 
-      #     :string_value => pairing.user.encoded_id, :data_type => 'String'
-      #     },
-      #     "title" => { 
-      #       :string_value => en_template_content.title, :data_type => 'String'
-      #     },
-      #     "request_id" => { 
-      #       :string_value => request_id, :data_type => 'String'
-      #     } 
-      #   }
-      # })
       AwsService.send_message_to_queue(localizations, 'push_jobs', {
         "cloud_id" => { 
         :string_value => pairing.user.encoded_id, :data_type => 'String'
@@ -84,6 +72,9 @@ class Api::Devices::V3::NotificationsController < Api::Base
         },
         "request_id" => { 
           :string_value => request_id, :data_type => 'String'
+        },
+        "app_group_id" => { 
+          :string_value => app_group_id, :data_type => 'String'
         } 
       })
     rescue Exception => e
@@ -97,7 +88,7 @@ class Api::Devices::V3::NotificationsController < Api::Base
       data = {
         firmware_version: device.firmware_version,
         app_group_id: valid_params[:app_group_id],
-        requestd_at: Time.now.utc.strftime("%Y-%m-%d %H:%M:%S"),
+        requested_at: Time.now.utc.strftime("%Y-%m-%d %H:%M:%S"),
         request_id: request_id,
         model_name: product.model_class_name,
         category: product.category.name,

@@ -20,7 +20,7 @@ When(/^client send a PUT request to \/v1\/device_certs\/{serial} with:$/) do |ta
   end
 
   if data["timestamp"].present?
-    timestamp = data["timestamp"].include?("INVALID") ? Time.now.to_i : ( Time.now.to_i + 350 )
+    timestamp = data["timestamp"].include?("INVALID") ? ( Time.now.to_i - 350 ) : Time.now.to_i
     header 'X-Timestamp', timestamp
   end
 

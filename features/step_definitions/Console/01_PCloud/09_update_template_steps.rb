@@ -17,7 +17,7 @@ When(/^client send a PUT request to \/v(\d+)\/templates\/:identity with:$/) do |
   elsif data["timestamp"].include?("INVALID")
     timestamp = Date.new(2017,9,6).to_time.to_i
   else
-    timestamp = 10.minutes.from_now.to_i
+    timestamp = Time.now.to_i
   end
 
   if data["identity"].nil?
@@ -72,7 +72,7 @@ When(/^client send a PUT request to \/v(\d+)\/templates\/:invalid_identity with:
   data = table.rows_hash
   path = '//' + Settings.environments.api_domain + "/v1/templates/invalid_identity"
   certificate_serial = @certificate.serial
-  timestamp = 10.minutes.from_now.to_i
+  timestamp = Time.now.to_i
   @template = @templates[0]
   template_contents_attributes = @template.template_contents.each_with_index.map{ |x, i|
       [

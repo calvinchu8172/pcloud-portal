@@ -12,7 +12,7 @@ module CheckSignature
   end
 
   def check_timestamp_valid(timestamp)
-     if timestamp.to_i - Time.now.to_i < 300
+    if Time.now.to_i - timestamp.to_i > 300
       return response_error("400.38")
     end
   end

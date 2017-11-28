@@ -17,7 +17,7 @@ When(/^client send a PUT request to \/v(\d+)\/oauth(\d+)\/applications\/:id with
   elsif data["timestamp"].include?("INVALID")
     timestamp = Date.new(2017,9,6).to_time.to_i
   else
-    timestamp = 10.minutes.from_now.to_i
+    timestamp = Time.now.to_i
   end
 
   if data["name"].nil?
@@ -84,7 +84,7 @@ When(/^client send a PUT request to \/v(\d+)\/oauth(\d+)\/applications\/:invalid
   data = table.rows_hash
   path = '//' + Settings.environments.api_domain + "/v1/oauth2/applications/invalid_id"
   certificate_serial = @certificate.serial
-  timestamp = 10.minutes.from_now.to_i
+  timestamp = Time.now.to_i
   @name = 'oauth_client_app_modify'
   @scopes = "all show create update destroy"
   @redirect_uri =

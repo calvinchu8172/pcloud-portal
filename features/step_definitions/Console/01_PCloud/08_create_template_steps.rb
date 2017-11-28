@@ -15,7 +15,7 @@ When(/^client send a POST request to \/v(\d+)\/templates with:$/) do |arg1, tabl
   elsif data["timestamp"].include?("INVALID")
     timestamp = Date.new(2017,9,6).to_time.to_i
   else
-    timestamp = 10.minutes.from_now.to_i
+    timestamp = Time.now.to_i
   end
 
   if data["identity"].nil?

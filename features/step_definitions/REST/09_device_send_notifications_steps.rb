@@ -1,4 +1,4 @@
-When(/^an template exists with template contents$/) do 
+When(/^an template exists with template contents$/) do
   @template = FactoryGirl.create(:template)
   @template_content = FactoryGirl.create(:template_content, template_id: @template.id)
 end
@@ -40,14 +40,14 @@ When(/^client send a POST request to \/d\/3\/notifications with:$/) do |table|
     if data["timestamp"].nil?
       timestamp = nil
     else
-      timestamp = data["timestamp"].include?("INVALID") ? Time.now.utc.to_i : Time.now.utc.to_i + 3000
+      timestamp = data["timestamp"].include?("INVALID") ? (Time.now.utc.to_i - 3000) : Time.now.utc.to_i
     end
     if data["signature"].nil?
       signature = nil
     else
       signature = data["signature"].include?("INVALID") ? "invalid_signature" : create_signature_urlsafe(timestamp, app_group_id, certificate_serial, mac_address, serial_number, template_identity, template_params)
     end
-    
+
     header 'X-Timestamp', timestamp
     header 'X-Signature', signature
 
@@ -63,7 +63,7 @@ When(/^client send a POST request to \/d\/3\/notifications with:$/) do |table|
 
     post path, body
   end
-  
+
   And(/^the JSON response should include key "(.*?)"$/) do |column_name|
     expect(JSON.parse(last_response.body)).to have_key("request_id")
   end
