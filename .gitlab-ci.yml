@@ -35,5 +35,3 @@ cucumber:
       - doc
   only:
     - develop
-    - /^release.*$/
-    - feature/20171123-1-no-validate-sso-app-redirect-uri
